@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: any = {
+  
   images: {
     remotePatterns: [
       {
@@ -15,9 +16,11 @@ const nextConfig: any = {
       },
     ],
   },
+
   eslint: {
     ignoreDuringBuilds: true,
   },
+
   typescript: {
     ignoreBuildErrors: true,
   },
