@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Plus_Jakarta_Sans, Caveat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header"; 
 import Footer from "@/components/Footer";
+import MobileAppBottomNav from "@/components/MobileAppBottomNav";
+import SmoothScroll from "@/components/SmoothScroll";
 
-const poppins = Poppins({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-signature",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Lapor Aman",
-  description: "Laporkan perundungan dengan aman dan anonim.",
+  title: "Lapor Aman - Platform Pengaduan & Perlindungan Siswa SMP Gelora",
+  description: "Platform pelaporan dan penanganan perundungan (bullying) yang aman, rahasia, dan terpercaya bagi siswa SMP Gelora Depok.",
 };
 
 export default function RootLayout({
@@ -20,12 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={poppins.className} suppressHydrationWarning={true}>
-        {/* Letakkan Header di sini, sebelum children */}
-        <Header />
-        {children}
-        <Footer />
+    <html lang="id" className={`${plusJakartaSans.variable} ${caveat.variable}`}>
+      <body className={`${plusJakartaSans.className} antialiased bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col font-sans`} suppressHydrationWarning={true}>
+        <SmoothScroll>
+          <Header />
+          <main className="flex-1 pb-20 md:pb-0">
+            {children}
+          </main>
+          <Footer />
+          <MobileAppBottomNav />
+        </SmoothScroll>
       </body>
     </html>
   );

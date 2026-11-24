@@ -2,15 +2,24 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import * as admin from 'firebase-admin';
 
-// 1. Inisialisasi Firebase Admin (Hanya berjalan di Server)
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+// 1. Inisialisasi Firebase Admin (Hanya berjalan di Server secara lazy)
+function ensureAdminInitialized() {
+  if (!admin.apps.length) {
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+
+    if (projectId && clientEmail && privateKey) {
+      admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId,
+          clientEmail,
+          privateKey,
+        }),
+      });
+    }
+  }
+  return admin.apps.length > 0;
 }
 
 export async function POST(request: Request) {
@@ -19,6 +28,10 @@ export async function POST(request: Request) {
 
     if (!email) {
       return NextResponse.json({ error: 'Email wajib diisi' }, { status: 400 });
+    }
+
+    if (!ensureAdminInitialized()) {
+      return NextResponse.json({ error: 'Firebase Admin credentials belum dikonfigurasi di environment server' }, { status: 500 });
     }
 
     // 2. Minta Link Reset Password ke Firebase (sebagai Admin)
