@@ -127,5 +127,16 @@ describe('legal-support-data integrity and copy rules', () => {
       )
     );
     assert.equal(PUBLIC_DOC_TABS.length, 3);
+    for (const item of [
+      ...PUBLIC_DOC_TABS,
+      ...ROLE_VISIBILITY_RULES,
+      ...REPORT_TONE_EXAMPLES,
+      ...HELP_TRIAGE_SOLUTIONS,
+    ]) {
+      assert.ok(
+        item.mobileLabel.length > 0 && item.mobileLabel.length <= 14,
+        `mobileLabel "${item.mobileLabel}" must fit cleanly in single-row mobile tabs`
+      );
+    }
   });
 });

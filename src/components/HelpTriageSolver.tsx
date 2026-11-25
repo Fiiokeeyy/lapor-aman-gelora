@@ -40,11 +40,11 @@ export default function HelpTriageSolver() {
         </div>
       </div>
 
-      {/* Topic Selector (Rounded-XL & 3D Active Navy matching Navbar) */}
+      {/* Topic Selector (Single-Row Mobile & Desktop, 3D Active Navy matching Navbar) */}
       <div
         role="tablist"
         aria-label="Pilih topik kendala pengguna"
-        className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 bg-[#E5F4FC] border border-[#9DD2F2] rounded-2xl p-1.5"
+        className="mt-6 grid grid-cols-3 gap-1 sm:gap-2 bg-[#E5F4FC] border border-[#9DD2F2] rounded-2xl p-1.5"
       >
         {HELP_TRIAGE_SOLUTIONS.map((item) => {
           const isSelected = item.id === activeIssue;
@@ -57,13 +57,14 @@ export default function HelpTriageSolver() {
               aria-selected={isSelected}
               aria-controls={`triage-panel-${item.id}`}
               onClick={() => setActiveIssue(item.id)}
-              className={`min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-center transition-all cursor-pointer ${
+              className={`min-w-0 min-h-[44px] px-1.5 sm:px-4 py-2 rounded-xl text-[11px] sm:text-sm font-bold text-center whitespace-nowrap transition-colors cursor-pointer ${
                 isSelected
                   ? 'bg-[#0B132B] text-white shadow-[0_8px_18px_-4px_rgba(11,19,43,0.48),inset_0_1px_1px_rgba(255,255,255,0.24)]'
                   : 'text-slate-700 hover:bg-white hover:text-slate-950'
               }`}
             >
-              {item.label}
+              <span className="sm:hidden">{item.mobileLabel}</span>
+              <span className="hidden sm:inline">{item.label}</span>
             </button>
           );
         })}

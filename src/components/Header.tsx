@@ -166,11 +166,11 @@ const Header = () => {
       {/* Desktop & Mobile Header Bar - GPU-Composited Transition (Zero Layout Reflow) */}
       <header className="sticky top-0 z-40 w-full pt-3 px-3 sm:px-6 pointer-events-none">
         <div className="relative max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-2.5 pointer-events-auto">
-          {/* Dedicated GPU Surface Layer (Only animates opacity & transform for 60fps on mobile) */}
+          {/* Dedicated GPU Surface Layer (Pure opacity fade for zero mobile jitter) */}
           <div
             aria-hidden="true"
-            className={`absolute inset-0 -z-10 rounded-2xl sm:rounded-3xl bg-white/95 border border-slate-200/90 shadow-[0_8px_24px_-6px_rgba(15,23,42,0.1)] transition-[opacity,transform] duration-250 ease-out will-change-[opacity,transform] pointer-events-none ${
-              isScrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.985]'
+            className={`absolute inset-0 -z-10 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-[0_8px_24px_-6px_rgba(15,23,42,0.1)] transition-opacity duration-200 ease-out pointer-events-none ${
+              isScrolled ? 'opacity-100' : 'opacity-0'
             }`}
           />
           {/* Logo & Identitas: Logo Sekolah Ghama Jelas & Terlihat + Teks LAPOR AMAN */}

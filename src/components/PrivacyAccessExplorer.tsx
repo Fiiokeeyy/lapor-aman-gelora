@@ -58,11 +58,11 @@ export default function PrivacyAccessExplorer() {
         </div>
       </div>
 
-      {/* Role Switcher Tabs (Rounded-XL & 3D Active Navy matching Navbar) */}
+      {/* Role Switcher Tabs (Single-Row Mobile & Desktop, 3D Active Navy matching Navbar) */}
       <div
         role="tablist"
         aria-label="Pilih peran akun untuk melihat izin data"
-        className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-2 bg-white border border-[#9DD2F2] rounded-2xl p-1.5"
+        className="mt-5 grid grid-cols-3 gap-1 sm:gap-2 bg-white border border-[#9DD2F2] rounded-2xl p-1.5"
       >
         {ROLE_VISIBILITY_RULES.map((role) => {
           const isSelected = role.id === selectedRole;
@@ -75,13 +75,14 @@ export default function PrivacyAccessExplorer() {
               aria-selected={isSelected}
               aria-controls={`panel-${role.id}`}
               onClick={() => setSelectedRole(role.id)}
-              className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-center transition-all cursor-pointer ${
+              className={`min-w-0 min-h-[44px] px-1.5 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-sm font-bold text-center whitespace-nowrap transition-colors cursor-pointer ${
                 isSelected
                   ? 'bg-[#0B132B] text-white shadow-[0_8px_18px_-4px_rgba(11,19,43,0.48),inset_0_1px_1px_rgba(255,255,255,0.24)]'
                   : 'text-slate-700 hover:text-slate-950 hover:bg-[#E5F4FC]'
               }`}
             >
-              {role.label}
+              <span className="sm:hidden">{role.mobileLabel}</span>
+              <span className="hidden sm:inline">{role.label}</span>
             </button>
           );
         })}

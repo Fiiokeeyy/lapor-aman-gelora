@@ -37,12 +37,12 @@ export default function PublicPageHero({
 }: PublicPageHeroProps) {
   return (
     <section className="relative bg-[#f0f7fb] border-b border-[#BFE3F7]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-8 sm:pb-12">
-        {/* Sibling Static Pages Rounded-XL Switcher (Konsisten dengan Navbar) */}
-        <div className="flex justify-center sm:justify-start pb-6 border-b border-[#CBE7F7]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-8 sm:pb-12">
+        {/* Sibling Static Pages Single-Row Rounded-XL Switcher (Konsisten dengan Navbar) */}
+        <div className="flex justify-center sm:justify-start pb-5 sm:pb-6 border-b border-[#CBE7F7]">
           <nav
             aria-label="Halaman Informasi Publik"
-            className="flex flex-wrap justify-center sm:justify-start items-center gap-1.5 bg-white border border-[#9DD2F2] rounded-2xl p-1.5 shadow-[0_8px_20px_-14px_rgba(2,132,199,0.22)]"
+            className="grid grid-cols-3 sm:inline-flex items-center gap-1 sm:gap-1.5 w-full sm:w-auto bg-white border border-[#9DD2F2] rounded-2xl p-1.5 shadow-[0_8px_20px_-14px_rgba(2,132,199,0.22)]"
           >
             {PUBLIC_DOC_TABS.map((tab) => {
               const isActive = tab.href === currentPath;
@@ -51,13 +51,14 @@ export default function PublicPageHero({
                   key={tab.href}
                   href={tab.href}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`inline-flex items-center justify-center min-h-[42px] px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  className={`inline-flex items-center justify-center min-w-0 min-h-[42px] px-1.5 sm:px-5 py-2 rounded-xl text-[11px] sm:text-sm font-bold whitespace-nowrap transition-colors ${
                     isActive
                       ? 'bg-[#0B132B] text-white shadow-[0_8px_18px_-4px_rgba(11,19,43,0.48),inset_0_1px_1px_rgba(255,255,255,0.24)]'
                       : 'text-slate-700 hover:text-slate-950 hover:bg-[#E5F4FC]'
                   }`}
                 >
-                  {tab.label}
+                  <span className="sm:hidden">{tab.mobileLabel}</span>
+                  <span className="hidden sm:inline">{tab.label}</span>
                 </Link>
               );
             })}
@@ -65,7 +66,7 @@ export default function PublicPageHero({
         </div>
 
         {/* Main Hero Editorial Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center pt-7 sm:pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-10 items-center pt-5 sm:pt-8">
           <div className="lg:col-span-8">
             <div className="inline-flex items-center gap-1.5 text-orange-600 mb-2">
               <HandcraftedPencilIcon className="w-5 h-5 shrink-0 text-orange-500" />

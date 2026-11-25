@@ -12,38 +12,54 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 1. Accessibility First: Respect user's motion preferences
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
-    // 2. Mobile & Desktop Smooth Scrolling (syncTouch enables Lenis momentum on mobile touchscreens)
-    const isTouchDevice =
+    // On pure touchscreens (phones/tablets), let native GPU compositor momentum drive finger
+    // swipes instead of hijacking touchmove via syncTouch (which dampens fling velocity and stutters).
+    const isTouchOnlyDevice =
       window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
 
-    const lenis = new Lenis({
-      duration: isTouchDevice ? 0.85 : 1.0,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      syncTouch: true,
-      syncTouchLerp: 0.085,
-      touchInertiaExponent: 1.55,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.15,
-      infinite: false,
-    });
+    let lenis: Lenis | null = null;
+    let animationFrameId: number | null = null;
 
-    (window as unknown as { lenis?: Lenis }).lenis = lenis;
+    if (!isTouchOnlyDevice) {
+      lenis = new Lenis({
+        duration: 0.95,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        syncTouch: false,
+        wheelMultiplier: 1.05,
+        infinite: false,
+      });
 
-    let animationFrameId: number;
+      (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
-    function raf(time: number) {
-      lenis.raf(time);
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        animationFrameId = requestAnimationFrame(raf);
+      };
       animationFrameId = requestAnimationFrame(raf);
     }
 
-    animationFrameId = requestAnimationFrame(raf);
+    const scrollToTarget = (targetEl: Element | null, offset = -90) => {
+      if (!targetEl) return;
+      if (lenis) {
+        lenis.scrollTo(targetEl as HTMLElement, { offset, duration: 1.0 });
+        return;
+      }
+      const targetTop = targetEl.getBoundingClientRect().top + window.scrollY + offset;
+      window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+    };
 
-    // Global Click Handler for Smooth Anchor Navigation across Header, Hero, Footer, etc.
+    const scrollToTop = () => {
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 0.9 });
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const handleAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a');
       if (!anchor) return;
@@ -52,15 +68,13 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
       const currentPath = window.location.pathname;
 
-      // Case 1: Clicking home link "/" while already on home page
       if (href === '/' && (currentPath === '/' || currentPath === '')) {
         e.preventDefault();
-        lenis.scrollTo(0, { duration: 1 });
+        scrollToTop();
         window.history.pushState(null, '', '/');
         return;
       }
 
-      // Case 2: Clicking hash links on the current page (e.g. "/#alur" or "#alur" while on "/")
       const isCurrentPageHash =
         href.startsWith('#') ||
         (href.startsWith('/#') && (currentPath === '/' || currentPath === ''));
@@ -69,14 +83,14 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         const hash = href.startsWith('/#') ? href.slice(1) : href;
         if (hash === '#' || hash === '') {
           e.preventDefault();
-          lenis.scrollTo(0, { duration: 1 });
+          scrollToTop();
           return;
         }
 
         const targetEl = document.querySelector(hash);
         if (targetEl) {
           e.preventDefault();
-          lenis.scrollTo(targetEl as HTMLElement, { offset: -90, duration: 1.05 });
+          scrollToTarget(targetEl, -90);
           window.history.pushState(null, '', hash);
         }
       }
@@ -84,29 +98,32 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
     document.addEventListener('click', handleAnchorClick);
 
-    // If loaded with a hash in URL
     if (window.location.hash) {
       setTimeout(() => {
-        const target = document.querySelector(window.location.hash);
-        if (target) {
-          lenis.scrollTo(target as HTMLElement, { offset: -90, immediate: false });
-        }
-      }, 350);
+        scrollToTarget(document.querySelector(window.location.hash), -90);
+      }, 250);
     }
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
       document.removeEventListener('click', handleAnchorClick);
-      lenis.destroy();
-      delete (window as unknown as { lenis?: Lenis }).lenis;
+      if (lenis) {
+        lenis.destroy();
+        delete (window as unknown as { lenis?: Lenis }).lenis;
+      }
     };
   }, []);
 
   // Reset scroll to top on route change
   useEffect(() => {
+    if (window.location.hash) return;
     const activeLenis = (window as unknown as { lenis?: Lenis }).lenis;
-    if (activeLenis && !window.location.hash) {
+    if (activeLenis) {
       activeLenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
     }
   }, [pathname]);
 

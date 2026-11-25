@@ -32,11 +32,11 @@ export default function ReportToneComparison() {
         </p>
       </div>
 
-      {/* Mode Switcher (Rounded-XL & 3D Active Navy matching Navbar) */}
+      {/* Mode Switcher (Single-Row Mobile & Desktop, 3D Active Navy matching Navbar) */}
       <div
         role="tablist"
         aria-label="Pilih contoh penulisan laporan"
-        className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2 bg-white border border-[#9DD2F2] rounded-2xl p-1.5"
+        className="mt-5 grid grid-cols-2 gap-1.5 sm:gap-2 bg-white border border-[#9DD2F2] rounded-2xl p-1.5"
       >
         {REPORT_TONE_EXAMPLES.map((example) => {
           const isSelected = example.id === activeTone;
@@ -49,13 +49,14 @@ export default function ReportToneComparison() {
               aria-selected={isSelected}
               aria-controls={`tone-panel-${example.id}`}
               onClick={() => setActiveTone(example.id)}
-              className={`min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`min-w-0 min-h-[44px] px-2 sm:px-4 py-2 rounded-xl text-[11px] sm:text-sm font-bold whitespace-nowrap transition-colors cursor-pointer ${
                 isSelected
                   ? 'bg-[#0B132B] text-white shadow-[0_8px_18px_-4px_rgba(11,19,43,0.48),inset_0_1px_1px_rgba(255,255,255,0.24)]'
                   : 'text-slate-700 hover:bg-[#E5F4FC] hover:text-slate-950'
               }`}
             >
-              {example.label}
+              <span className="sm:hidden">{example.mobileLabel}</span>
+              <span className="hidden sm:inline">{example.label}</span>
             </button>
           );
         })}

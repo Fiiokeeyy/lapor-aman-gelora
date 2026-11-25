@@ -5,13 +5,14 @@ export type PublicDocHref =
 
 export interface PublicDocTab {
   label: string;
+  mobileLabel: string;
   href: PublicDocHref;
 }
 
 export const PUBLIC_DOC_TABS: readonly PublicDocTab[] = [
-  { label: 'Kebijakan Privasi', href: '/kebijakan-privasi' },
-  { label: 'Syarat & Ketentuan', href: '/syarat-ketentuan' },
-  { label: 'Pusat Bantuan', href: '/pusat-bantuan' },
+  { label: 'Kebijakan Privasi', mobileLabel: 'Privasi', href: '/kebijakan-privasi' },
+  { label: 'Syarat & Ketentuan', mobileLabel: 'Ketentuan', href: '/syarat-ketentuan' },
+  { label: 'Pusat Bantuan', mobileLabel: 'Bantuan', href: '/pusat-bantuan' },
 ];
 
 export const PRIVACY_LAST_UPDATED = '30 November 2025';
@@ -28,6 +29,7 @@ export interface PrivacySection {
   id: string;
   number: string;
   title: string;
+  shortTitle: string;
   summary: string;
   paragraphs: string[];
   bullets?: PrivacyBullet[];
@@ -39,6 +41,7 @@ export const PRIVACY_SECTIONS: readonly PrivacySection[] = [
     id: 'pendahuluan',
     number: '01',
     title: 'Pendahuluan & Cakupan Sistem',
+    shortTitle: 'Pendahuluan',
     summary:
       'Komitmen SMP Gelora Depok menjaga kerahasiaan identitas pelapor dan data kasus perundungan.',
     paragraphs: [
@@ -50,6 +53,7 @@ export const PRIVACY_SECTIONS: readonly PrivacySection[] = [
     id: 'informasi-dikumpulkan',
     number: '02',
     title: 'Informasi yang Kami Kumpulkan',
+    shortTitle: 'Data Akun',
     summary:
       'Hanya data inti akun masuk dan rincian kejadian yang diperlukan untuk menindaklanjuti laporan.',
     paragraphs: [
@@ -82,6 +86,7 @@ export const PRIVACY_SECTIONS: readonly PrivacySection[] = [
     id: 'keamanan-kerahasiaan',
     number: '03',
     title: 'Keamanan & Kerahasiaan Data',
+    shortTitle: 'Kerahasiaan',
     summary:
       'Setiap siswa hanya dapat melihat laporannya sendiri, dan akses admin sistem hanya dipegang oleh Guru BK.',
     paragraphs: [
@@ -94,6 +99,7 @@ export const PRIVACY_SECTIONS: readonly PrivacySection[] = [
     id: 'penggunaan-informasi',
     number: '04',
     title: 'Tujuan Penggunaan Informasi',
+    shortTitle: 'Tujuan Data',
     summary:
       'Pemanfaatan data murni untuk perlindungan korban, mediasi, dan pemetaan keamanan sekolah.',
     paragraphs: [
@@ -130,6 +136,7 @@ export interface RoleFieldPermission {
 export interface RoleVisibilityRule {
   id: AccessRoleId;
   label: string;
+  mobileLabel: string;
   badge: string;
   accessSummary: string;
   fields: RoleFieldPermission[];
@@ -139,6 +146,7 @@ export const ROLE_VISIBILITY_RULES: readonly RoleVisibilityRule[] = [
   {
     id: 'siswa-pelapor',
     label: 'Siswa Pelapor (Sendiri)',
+    mobileLabel: 'Pelapor',
     badge: 'Hanya Laporan Milik Sendiri',
     accessSummary:
       'Di Dashboard Siswa, Anda hanya dapat melihat riwayat, kronologi, serta pembaruan status dari laporan yang Anda kirimkan sendiri.',
@@ -163,6 +171,7 @@ export const ROLE_VISIBILITY_RULES: readonly RoleVisibilityRule[] = [
   {
     id: 'siswa-lain',
     label: 'Siswa Lain',
+    mobileLabel: 'Siswa Lain',
     badge: 'Tertutup Total',
     accessSummary:
       'Siswa lain sama sekali tidak memiliki akses untuk melihat identitas pelapor, isi kronologi, maupun laporan siswa lain di seluruh portal.',
@@ -187,6 +196,7 @@ export const ROLE_VISIBILITY_RULES: readonly RoleVisibilityRule[] = [
   {
     id: 'guru-bk',
     label: 'Admin (Hanya Guru BK)',
+    mobileLabel: 'Guru BK',
     badge: 'Satu-satunya Otoritas Admin',
     accessSummary:
       'Hanya Guru Bimbingan Konseling (BK) SMP Gelora Depok yang memegang akun admin untuk membuka, meninjau, dan menindaklanjuti seluruh laporan masuk.',
@@ -221,6 +231,7 @@ export interface TermsSection {
   id: string;
   number: string;
   title: string;
+  shortTitle: string;
   lead: string;
   points: string[];
   highlight?: string;
@@ -231,6 +242,7 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
     id: 'kejujuran-laporan',
     number: '01',
     title: 'Kejujuran & Akurasi Laporan',
+    shortTitle: 'Kejujuran',
     lead: 'Setiap pengaduan wajib disampaikan berdasarkan kejadian nyata dengan iktikad baik untuk mencari penyelesaian.',
     points: [
       'Cantumkan waktu, lokasi, serta kronologi kejadian sedetail mungkin agar Guru BK dapat memverifikasi laporan secara objektif.',
@@ -242,6 +254,7 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
     id: 'etika-bahasa',
     number: '02',
     title: 'Etika Bahasa & Penulisan',
+    shortTitle: 'Etika Bahasa',
     lead: 'Gunakan bahasa Indonesia yang sopan, lugas, dan berfokus pada peristiwa meskipun situasi sedang emosional.',
     points: [
       'Hindari kata-kata kasar, cacian, makian, maupun ancaman balik terhadap pihak terlapor di kolom kronologi.',
@@ -252,6 +265,7 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
     id: 'hak-sanksi',
     number: '03',
     title: 'Ketentuan Peninjauan & Sanksi',
+    shortTitle: 'Sanksi',
     lead: 'Guru BK SMP Gelora Depok berhak memverifikasi kelayakan laporan dan menindaklanjuti penyalahgunaan portal sesuai tata tertib.',
     points: [
       'Admin Guru BK berhak menolak atau mengarsipkan laporan yang tidak memiliki dasar fakta, bersifat spam, atau melanggar ketentuan hukum seperti muatan SARA dan konten asusila.',
@@ -264,6 +278,7 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
     id: 'batasan-layanan',
     number: '04',
     title: 'Batasan Sistem & Konseling Tatap Muka',
+    shortTitle: 'Batasan',
     lead: 'Lapor Aman adalah gerbang pelaporan digital yang terhubung langsung dengan penanganan luring di ruang BK.',
     points: [
       'Sistem digital ini membantu pencatatan dan pemantauan awal, namun penyelesaian masalah maupun pemulihan psikologis tetap memerlukan sesi konsultasi atau mediasi tatap muka bersama Guru BK.',
@@ -277,6 +292,7 @@ export type ReportToneId = 'diterima' | 'ditolak';
 export interface ReportToneExample {
   id: ReportToneId;
   label: string;
+  mobileLabel: string;
   verdict: string;
   sampleTitle: string;
   sampleBody: string;
@@ -287,6 +303,7 @@ export const REPORT_TONE_EXAMPLES: readonly ReportToneExample[] = [
   {
     id: 'diterima',
     label: 'Laporan Objektif (Diterima)',
+    mobileLabel: 'Diterima',
     verdict: 'Memenuhi standar kronologi dan langsung diproses BK',
     sampleTitle: 'Intimidasi & Pemalakan di Area Kantin Belakang',
     sampleBody:
@@ -300,6 +317,7 @@ export const REPORT_TONE_EXAMPLES: readonly ReportToneExample[] = [
   {
     id: 'ditolak',
     label: 'Fitnah / Kata Kasar (Ditolak)',
+    mobileLabel: 'Ditolak',
     verdict: 'Tidak jelas kronologinya dan melanggar etika penulisan',
     sampleTitle: 'Anak kelas sebelah rese banget!!',
     sampleBody:
@@ -327,6 +345,7 @@ export type HelpTriageId =
 export interface HelpTriageSolution {
   id: HelpTriageId;
   label: string;
+  mobileLabel: string;
   issueTitle: string;
   summary: string;
   steps: string[];
@@ -338,6 +357,7 @@ export const HELP_TRIAGE_SOLUTIONS: readonly HelpTriageSolution[] = [
   {
     id: 'kendala-masuk',
     label: 'Lupa Akun / Sulit Masuk',
+    mobileLabel: 'Lupa Akun',
     issueTitle: 'Mengatasi kendala login akun siswa Lapor Aman',
     summary:
       'Jika Anda lupa kata sandi atau akun belum aktif saat ingin mengirim pengaduan, ikuti langkah pemulihan berikut:',
@@ -352,6 +372,7 @@ export const HELP_TRIAGE_SOLUTIONS: readonly HelpTriageSolution[] = [
   {
     id: 'unggah-bukti',
     label: 'Cara Mengirim Bukti',
+    mobileLabel: 'Bukti Foto',
     issueTitle: 'Panduan melampirkan foto atau tangkapan layar dengan aman',
     summary:
       'Bukti visual membantu Guru BK memverifikasi kasus siber maupun perundungan fisik secara lebih cepat.',
@@ -366,6 +387,7 @@ export const HELP_TRIAGE_SOLUTIONS: readonly HelpTriageSolution[] = [
   {
     id: 'konseling-langsung',
     label: 'Butuh Konseling Langsung',
+    mobileLabel: 'Guru BK',
     issueTitle: 'Menghubungi Guru BK untuk pendampingan tatap muka',
     summary:
       'Selain melalui formulir daring, Anda dapat langsung menemui konselor SMP Gelora Depok kapan saja pada jam operasional sekolah.',

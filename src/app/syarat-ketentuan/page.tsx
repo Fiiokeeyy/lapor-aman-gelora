@@ -21,11 +21,13 @@ const TOC_ITEMS = [
     id: sec.id,
     number: sec.number,
     label: sec.title,
+    shortLabel: sec.shortTitle,
   })),
   {
     id: 'contoh-penulisan',
     number: '05',
     label: 'Simulasi Penulisan Laporan',
+    shortLabel: 'Simulasi Laporan',
   },
 ];
 
@@ -44,24 +46,24 @@ export default function SyaratKetentuanPage() {
         rightVisual={<Icon3DRegulationHub />}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-        {/* Mobile Section Jump Strip */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        {/* Compact Mobile Section Jump Grid */}
         <nav
           aria-label="Navigasi cepat pasal syarat dan ketentuan"
-          className="lg:hidden mb-6 bg-white border border-[#9DD2F2] rounded-2xl p-4"
+          className="lg:hidden mb-6 bg-white border border-[#9DD2F2] rounded-2xl p-3.5"
         >
-          <p className="text-xs font-bold uppercase tracking-wide text-slate-600 mb-3">
+          <p className="text-xs font-bold uppercase tracking-wide text-slate-600 mb-2.5">
             Loncat ke Ketentuan
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {TOC_ITEMS.map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className="inline-flex items-center gap-1.5 min-h-[40px] px-3 py-1.5 rounded-xl bg-[#E5F4FC] border border-[#9DD2F2] text-xs font-bold text-slate-900 hover:bg-[#CCEAFC] transition-colors"
+                className="inline-flex items-center gap-1.5 min-h-[40px] px-3 py-1.5 rounded-xl bg-[#E5F4FC] border border-[#9DD2F2] text-xs font-bold text-slate-900 hover:bg-[#CCEAFC] transition-colors last:col-span-2 sm:last:col-span-1"
               >
-                <span className="text-sky-700 tabular-nums">{item.number}</span>
-                <span>{item.label}</span>
+                <span className="text-sky-700 tabular-nums shrink-0">{item.number}</span>
+                <span className="truncate">{item.shortLabel}</span>
               </a>
             ))}
           </div>
