@@ -24,6 +24,7 @@ import {
 import {
   HandcraftedPencilIcon,
   PencilSketchUnderline,
+  HanddrawnDownArrow,
   Hero3DShieldLock,
   Hero3DVerifiedMedal,
   Hero3DMegaphone,
@@ -43,6 +44,7 @@ import {
   Icon3DPillarChildRights,
   Icon3DPillarRestorative,
 } from '@/components/icons/LaporAman3DIcons';
+import BullyingExplorer from '@/components/BullyingExplorer';
 import TeamShowcase from '@/components/TeamShowcase';
 
 const MOCKUP_PREVIEW_DATA = {
@@ -170,75 +172,74 @@ export default function HomePage() {
   const mockupData = MOCKUP_PREVIEW_DATA[activeTab];
 
   return (
-    <div className="bg-[#f0f7fb] min-h-screen flex flex-col font-sans overflow-x-hidden text-slate-900 selection:bg-orange-100 selection:text-orange-900">
+    <div className="bg-[#f0f7fb] min-h-screen flex flex-col font-sans overflow-x-clip text-slate-900 selection:bg-orange-100 selection:text-orange-900">
       <div className="flex-grow">
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION (Telur Asin Canvas + Single Unified Pattern + 4 Upper 3D) */}
+        {/* 1. HERO SECTION (Clean Telur Asin Canvas + Minimal Orbital + 4 3D Icons)  */}
         {/* ========================================================================= */}
-        <section id="beranda" className="relative pt-6 sm:pt-12 pb-20 sm:pb-28 bg-[#f0f7fb] bg-pattern-telur-asin overflow-hidden">
-          {/* Concentric Dashed Orbital Centerpiece Pattern (Static) */}
+        <section id="beranda" className="relative pt-6 sm:pt-12 pb-20 sm:pb-28 bg-[#f0f7fb] overflow-hidden">
+          {/* Minimal 2-Ring Orbital Centerpiece Pattern (Clean, No Busy Grid Dots) */}
           <div
             aria-hidden="true"
-            className="absolute top-[310px] sm:top-[370px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] sm:w-[940px] sm:h-[940px] lg:w-[1100px] lg:h-[1100px] pointer-events-none -z-0 select-none"
+            className="absolute top-[300px] sm:top-[350px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] sm:w-[880px] sm:h-[880px] lg:w-[1040px] lg:h-[1040px] pointer-events-none -z-0 select-none [mask-image:radial-gradient(circle_at_50%_45%,#000_45%,transparent_78%)]"
           >
-            <div className="absolute inset-0 rounded-full bg-radial from-[#BFE3F7]/40 via-[#E5F4FC]/30 to-transparent blur-3xl"></div>
-            <svg className="w-full h-full text-[#9DD2F2]/75" viewBox="0 0 1000 1000" fill="none">
-              <circle cx="500" cy="500" r="230" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 8" />
-              <circle cx="500" cy="500" r="370" stroke="currentColor" strokeWidth="1.5" strokeDasharray="8 10" />
-              <circle cx="500" cy="500" r="485" stroke="currentColor" strokeWidth="1.5" strokeDasharray="10 12" />
-              <path d="M190 350 A 370 370 0 0 1 810 350" stroke="#7DD3FC" strokeWidth="3" strokeOpacity="0.45" strokeLinecap="round" />
+            <div className="absolute inset-0 rounded-full bg-radial from-white/75 via-[#E5F4FC]/45 to-transparent blur-2xl"></div>
+            <svg className="w-full h-full text-[#9DD2F2]/60" viewBox="0 0 1000 1000" fill="none">
+              <circle cx="500" cy="500" r="260" stroke="currentColor" strokeWidth="1.25" />
+              <circle cx="500" cy="500" r="410" stroke="currentColor" strokeWidth="1.25" strokeDasharray="6 10" />
             </svg>
           </div>
 
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl text-center relative z-10">
-            {/* Upper 3D Static Title Decorations Only (No bottom/love/kamu tidak sendiri overlap!) */}
+            {/* Upper 3D Static Title Decorations Only */}
             <div
               aria-hidden="true"
-              className="hidden lg:flex flex-col items-center gap-1.5 absolute -top-2 left-2 xl:left-6 z-20 pointer-events-none select-none"
+              className="hidden lg:flex flex-col items-center gap-1.5 absolute -top-1 left-2 xl:left-6 z-20 pointer-events-none select-none"
             >
               <Hero3DShieldLock />
-              <span className="px-2.5 py-0.5 rounded-full bg-white/95 border border-[#BFE3F7] text-[10px] font-extrabold text-sky-900 shadow-2xs">
+              <span className="px-2.5 py-0.5 rounded-full bg-white border border-[#BFE3F7] text-[10px] font-extrabold text-sky-900 shadow-2xs">
                 Proteksi Enkripsi
               </span>
             </div>
 
             <div
               aria-hidden="true"
-              className="hidden lg:flex flex-col items-center gap-1.5 absolute -top-2 right-2 xl:right-6 z-20 pointer-events-none select-none"
+              className="hidden lg:flex flex-col items-center gap-1.5 absolute -top-1 right-2 xl:right-6 z-20 pointer-events-none select-none"
             >
               <Hero3DVerifiedMedal />
-              <span className="px-2.5 py-0.5 rounded-full bg-white/95 border border-[#BFE3F7] text-[10px] font-extrabold text-sky-900 shadow-2xs">
+              <span className="px-2.5 py-0.5 rounded-full bg-white border border-[#BFE3F7] text-[10px] font-extrabold text-sky-900 shadow-2xs">
                 100% Rahasia &amp; Aman
               </span>
             </div>
 
             <div
               aria-hidden="true"
-              className="hidden xl:flex absolute top-44 left-1 2xl:left-6 z-10 pointer-events-none select-none"
+              className="hidden xl:flex absolute top-40 left-2 2xl:left-8 z-10 pointer-events-none select-none"
             >
               <Hero3DMegaphone />
             </div>
 
             <div
               aria-hidden="true"
-              className="hidden xl:flex absolute top-44 right-1 2xl:right-6 z-10 pointer-events-none select-none"
+              className="hidden xl:flex absolute top-40 right-2 2xl:right-8 z-10 pointer-events-none select-none"
             >
               <Hero3DSealedEnvelope />
             </div>
 
-            {/* Top Brand Identity Line: Bespoke Pencil Vector Stroke + School Signature */}
+            {/* Top Brand Identity Line: Bespoke Pencil Vector + Downward Curved Arrow */}
             <div className="inline-flex flex-wrap items-center justify-center gap-2 mb-4 select-none">
               <HandcraftedPencilIcon />
               <span className="text-xs sm:text-sm font-bold text-slate-800 tracking-wide">
                 Ruang Aman Pengaduan &amp; Perlindungan Siswa
               </span>
-              <span className="font-signature text-orange-500 text-xl sm:text-2xl font-bold select-none -rotate-2">
-                SMP Gelora ⤷
+              <span className="inline-flex items-center gap-1 font-signature text-orange-500 text-xl sm:text-2xl font-bold select-none -rotate-1">
+                <span>SMP Gelora</span>
+                <HanddrawnDownArrow />
               </span>
             </div>
 
             {/* Main Hero Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[62px] font-black tracking-tight text-slate-900 leading-[1.12] max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[62px] font-black tracking-tight text-slate-900 leading-[1.1] max-w-4xl mx-auto">
               Ruang Aman Bersuara,{' '}
               <span className="relative inline-block text-orange-500">
                 Hentikan Perundungan
@@ -246,14 +247,14 @@ export default function HomePage() {
               </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
-              Dari pelaporan akun siswa terverifikasi, pemantauan investigasi berkala, hingga pendampingan konseling BK
-              resmi. Semua terkelola terstruktur, aman, dan patuh regulasi perlindungan anak.
+            {/* Subtitle (Clean, Punchy & Scannable) */}
+            <p className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-slate-600 max-w-xl mx-auto leading-relaxed font-normal">
+              Saluran pelaporan siswa terverifikasi, pemantauan investigasi berkala, hingga pendampingan konseling BK
+              resmi dalam satu platform aman.
             </p>
 
-            {/* Primary & Secondary Action CTAs (Solid Warm Orange, No Gradient) */}
-            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4">
+            {/* Primary & Secondary Action CTAs (Solid Warm Orange) */}
+            <div className="mt-8 sm:mt-9 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4">
               <button
                 type="button"
                 onClick={handleLaporClick}
@@ -272,14 +273,18 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Platform Availability */}
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5 text-xs text-slate-600 font-medium">
-              <span>Tersedia untuk:</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#BFE3F7] text-slate-700 font-semibold text-[11px]">
-                <Laptop size={13} className="text-sky-600" aria-hidden="true" /> Web Browser
+            {/* Clean Editorial Platform Micro-Strip (Zero Boxy Pill Clutter) */}
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-slate-600 font-semibold">
+              <span className="inline-flex items-center gap-1.5">
+                <Laptop size={14} className="text-sky-600" aria-hidden="true" /> Web Browser
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#BFE3F7] text-slate-700 font-semibold text-[11px]">
-                <Smartphone size={13} className="text-orange-500" aria-hidden="true" /> Mobile App (PWA)
+              <span aria-hidden="true" className="text-[#9DD2F2]">•</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Smartphone size={14} className="text-orange-500" aria-hidden="true" /> Mobile App (PWA)
+              </span>
+              <span aria-hidden="true" className="text-[#9DD2F2]">•</span>
+              <span className="inline-flex items-center gap-1.5 text-slate-700">
+                <CheckCircle2 size={14} className="text-emerald-600" aria-hidden="true" /> Didampingi Guru BK
               </span>
             </div>
 
@@ -500,41 +505,9 @@ export default function HomePage() {
         </section>
 
         {/* ========================================================================= */}
-        {/* 2. STATS & RECOGNITION BAR (Crisp Pure White - Zero Pattern)              */}
+        {/* 2. KENALI BENTUK PERUNDUNGAN (Interactive Asymmetric Explorer - Non-Slop) */}
         {/* ========================================================================= */}
-        <section className="py-12 bg-white border-y border-[#BFE3F7]/80">
-          <div className="container mx-auto px-6 max-w-6xl">
-            <p className="text-center text-xs font-bold text-slate-500 mb-8 tracking-wide">
-              Dirancang Khusus Untuk Ekosistem Aman SMP Gelora Depok
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <p className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">5 Kategori</p>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
-                  Fisik, Verbal, Siber, Sosial, Emosional
-                </p>
-              </div>
-              <div>
-                <p className="text-3xl sm:text-4xl font-black text-sky-600 tracking-tight">100%</p>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
-                  Kerahasiaan Data Pelapor Terjaga
-                </p>
-              </div>
-              <div>
-                <p className="text-3xl sm:text-4xl font-black text-orange-500 tracking-tight">&lt; 24 Jam</p>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
-                  Standar Respons Awal Guru BK
-                </p>
-              </div>
-              <div>
-                <p className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">0 Toleransi</p>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
-                  Terhadap Bullying &amp; Kekerasan
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <BullyingExplorer onReportClick={handleLaporClick} />
 
         {/* ========================================================================= */}
         {/* 3. ALUR LAPORAN (Pure White Canvas + 3D Icons Consistent With Hero)       */}
@@ -542,8 +515,9 @@ export default function HomePage() {
         <section id="alur" className="py-20 sm:py-28 bg-white border-b border-[#BFE3F7]/80">
           <div className="container mx-auto px-6 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="font-signature text-orange-500 text-lg sm:text-xl font-bold block mb-1 select-none">
-                Tiga Langkah Terarah ⤷
+              <span className="inline-flex items-center justify-center gap-1 font-signature text-orange-500 text-lg sm:text-xl font-bold mb-1 select-none">
+                <span>Tiga Langkah Terarah</span>
+                <HanddrawnDownArrow />
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
                 Bagaimana Cara Kerjanya?
@@ -614,8 +588,9 @@ export default function HomePage() {
           <span id="fitur" className="absolute -top-24 pointer-events-none"></span>
           <div className="container mx-auto px-6 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="font-signature text-orange-500 text-lg sm:text-xl font-bold block mb-1 select-none">
-                Modul &amp; Fitur Utama ⤷
+              <span className="inline-flex items-center justify-center gap-1 font-signature text-orange-500 text-lg sm:text-xl font-bold mb-1 select-none">
+                <span>Modul &amp; Fitur Utama</span>
+                <HanddrawnDownArrow />
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                 6 Solusi Terpadu Menjawab Keamanan Sekolah
@@ -775,16 +750,17 @@ export default function HomePage() {
         </section>
 
         {/* ========================================================================= */}
-        {/* 5. POHON REGULASI & AKAR KEPATUHAN HUKUM (Upgraded 3D Icons & Root Tree)  */}
+        {/* 5. POHON REGULASI & AKAR KEPATUHAN HUKUM (Clean Canvas + Seamless Roots)  */}
         {/* ========================================================================= */}
         <section
           id="kepatuhan"
-          className="py-20 sm:py-28 bg-[#f0f7fb] bg-pattern-telur-asin border-t border-b border-[#BFE3F7]/80"
+          className="py-20 sm:py-28 bg-[#f0f7fb] border-t border-b border-[#BFE3F7]/80"
         >
           <div className="container mx-auto px-6 max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="font-signature text-orange-500 text-lg sm:text-xl font-bold block mb-1 select-none">
-                Pohon Regulasi &amp; Keamanan ⤷
+              <span className="inline-flex items-center justify-center gap-1 font-signature text-orange-500 text-lg sm:text-xl font-bold mb-1 select-none">
+                <span>Pohon Regulasi &amp; Keamanan</span>
+                <HanddrawnDownArrow />
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                 Pondasi Kepatuhan &amp; Jaminan Keamanan
@@ -794,9 +770,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Upgraded Architectural Branching Root System */}
+            {/* Clean Architectural Branching Root System (Zero Stray Dots or Dashed Clutter) */}
             <div className="relative">
-              {/* Central Root Hub Card with 3D Shield Crest */}
+              {/* Central Root Hub Card */}
               <div className="max-w-md mx-auto p-6 sm:p-7 rounded-2xl bg-white border-2 border-orange-300 shadow-[0_14px_34px_-14px_rgba(249,115,22,0.22)] text-center relative z-10">
                 <div className="mb-3">
                   <Icon3DRegulationHub />
@@ -810,62 +786,36 @@ export default function HomePage() {
                 <p className="text-xs text-slate-500 mt-1">
                   Standar Terpadu Satuan Pendidikan SMP Gelora Depok
                 </p>
-
-                {/* Sculpted Root Junction Socket */}
-                <div
-                  aria-hidden="true"
-                  className="hidden lg:flex absolute -bottom-3.5 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-orange-500 border-4 border-white shadow-sm items-center justify-center"
-                >
-                  <span className="w-2 h-2 rounded-full bg-white"></span>
-                </div>
               </div>
 
-              {/* Desktop Dual-Layer Tapered Root Network (Aligned to 4 Card Centers: 141, 447, 753, 1059) */}
-              <div className="hidden lg:block w-full h-28 pointer-events-none select-none relative z-0 -my-1">
-                <svg className="w-full h-full" viewBox="0 0 1200 112" fill="none" preserveAspectRatio="none" aria-hidden="true">
+              {/* Desktop Smooth Unbroken Dual-Layer Root Conduits (Flush Into 4 Card Centers: 141, 447, 753, 1059) */}
+              <div className="hidden lg:block w-full h-24 pointer-events-none select-none relative z-0 -my-px">
+                <svg className="w-full h-full" viewBox="0 0 1200 96" fill="none" preserveAspectRatio="none" aria-hidden="true">
                   {/* Soft Outer Vascular Sheath */}
-                  <path d="M600 0V30" stroke="#BAE6FD" strokeWidth="9" strokeLinecap="round" />
-                  <path d="M600 30C600 62 141 44 141 112" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
-                  <path d="M600 30C600 62 447 46 447 112" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
-                  <path d="M600 30C600 62 753 46 753 112" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
-                  <path d="M600 30C600 62 1059 44 1059 112" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
+                  <path d="M600 0V26" stroke="#BAE6FD" strokeWidth="8" strokeLinecap="round" />
+                  <path d="M600 26C600 54 141 38 141 96" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
+                  <path d="M600 26C600 54 447 40 447 96" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
+                  <path d="M600 26C600 54 753 40 753 96" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
+                  <path d="M600 26C600 54 1059 38 1059 96" stroke="#BAE6FD" strokeWidth="7" strokeLinecap="round" />
 
-                  {/* Crisp Core Root Conduits */}
-                  <path d="M600 0V30" stroke="#0284C7" strokeWidth="3" strokeLinecap="round" />
-                  <path d="M600 30C600 62 141 44 141 112" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M600 30C600 62 447 46 447 112" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M600 30C600 62 753 46 753 112" stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M600 30C600 62 1059 44 1059 112" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
-
-                  {/* Organic Balancing Lateral Rootlets */}
-                  <path d="M350 49C325 65 295 72 280 86" stroke="#7DD3FC" strokeWidth="1.5" strokeDasharray="4 4" strokeLinecap="round" />
-                  <path d="M850 49C875 65 905 72 920 86" stroke="#7DD3FC" strokeWidth="1.5" strokeDasharray="4 4" strokeLinecap="round" />
-
-                  {/* Root Junction Manifold Node */}
-                  <circle cx="600" cy="30" r="9" fill="#FFFFFF" stroke="#0284C7" strokeWidth="3" />
-                  <circle cx="600" cy="30" r="4" fill="#F97316" />
+                  {/* Solid Core Root Conduits */}
+                  <path d="M600 0V26" stroke="#0284C7" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M600 26C600 54 141 38 141 96" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
+                  <path d="M600 26C600 54 447 40 447 96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
+                  <path d="M600 26C600 54 753 40 753 96" stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" />
+                  <path d="M600 26C600 54 1059 38 1059 96" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                 </svg>
               </div>
 
-              {/* Mobile / Tablet Vertical Root Spine Indicator */}
-              <div className="lg:hidden flex justify-center py-4 pointer-events-none select-none" aria-hidden="true">
-                <div className="w-0.5 h-8 bg-[#0284C7]/60 relative">
-                  <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-orange-500 border-2 border-white"></span>
-                </div>
+              {/* Mobile / Tablet Simple Solid Root Trunk */}
+              <div className="lg:hidden flex justify-center py-3 pointer-events-none select-none" aria-hidden="true">
+                <div className="w-0.5 h-7 bg-[#0284C7]/60" />
               </div>
 
-              {/* 4 Branching Compliance Pillar Cards with Dedicated 3D Icons */}
+              {/* 4 Branching Compliance Pillar Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10 pl-5 lg:pl-0 border-l-2 border-[#7DD3FC]/80 lg:border-l-0">
                 {/* Pillar 1 */}
-                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] hover:border-sky-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(2,132,199,0.16)]">
-                  {/* Desktop Top Root Anchor Node */}
-                  <div
-                    aria-hidden="true"
-                    className="hidden lg:flex absolute -top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-[#0284C7] items-center justify-center shadow-2xs"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
-                  </div>
-                  {/* Mobile Left Spine Connector */}
+                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] border-t-[3px] lg:border-t-[#0284C7] hover:border-sky-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(2,132,199,0.16)]">
                   <div
                     aria-hidden="true"
                     className="lg:hidden absolute top-10 -left-[27px] w-5 h-0.5 bg-[#0284C7]"
@@ -883,13 +833,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Pillar 2 */}
-                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] hover:border-orange-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(249,115,22,0.16)]">
-                  <div
-                    aria-hidden="true"
-                    className="hidden lg:flex absolute -top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-orange-500 items-center justify-center shadow-2xs"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                  </div>
+                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] border-t-[3px] lg:border-t-orange-500 hover:border-orange-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(249,115,22,0.16)]">
                   <div
                     aria-hidden="true"
                     className="lg:hidden absolute top-10 -left-[27px] w-5 h-0.5 bg-orange-500"
@@ -907,13 +851,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Pillar 3 */}
-                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] hover:border-emerald-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(16,185,129,0.16)]">
-                  <div
-                    aria-hidden="true"
-                    className="hidden lg:flex absolute -top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-emerald-600 items-center justify-center shadow-2xs"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
-                  </div>
+                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] border-t-[3px] lg:border-t-emerald-600 hover:border-emerald-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(16,185,129,0.16)]">
                   <div
                     aria-hidden="true"
                     className="lg:hidden absolute top-10 -left-[27px] w-5 h-0.5 bg-emerald-600"
@@ -931,13 +869,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Pillar 4 */}
-                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] hover:border-sky-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(2,132,199,0.16)]">
-                  <div
-                    aria-hidden="true"
-                    className="hidden lg:flex absolute -top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-[#0284C7] items-center justify-center shadow-2xs"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
-                  </div>
+                <div className="p-6 rounded-2xl bg-white border border-[#BFE3F7] border-t-[3px] lg:border-t-[#0284C7] hover:border-sky-400 transition-colors relative shadow-[0_8px_24px_-14px_rgba(2,132,199,0.16)]">
                   <div
                     aria-hidden="true"
                     className="lg:hidden absolute top-10 -left-[27px] w-5 h-0.5 bg-[#0284C7]"
@@ -972,8 +904,9 @@ export default function HomePage() {
               {/* Left Column: Heading & BK Helpdesk Card */}
               <div className="lg:col-span-5 space-y-6">
                 <div>
-                  <span className="font-signature text-orange-500 text-lg font-bold block mb-1 select-none">
-                    Jawaban Lengkap Pertanyaan Anda ⤷
+                  <span className="inline-flex items-center gap-1 font-signature text-orange-500 text-lg font-bold mb-1 select-none">
+                    <span>Jawaban Lengkap Pertanyaan Anda</span>
+                    <HanddrawnDownArrow />
                   </span>
                   <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
                     Masih Memiliki Pertanyaan Seputar Lapor Aman?

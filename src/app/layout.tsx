@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${plusJakartaSans.variable} ${caveat.variable}`}>
-      <body className={`${plusJakartaSans.className} antialiased bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col font-sans`} suppressHydrationWarning={true}>
+      <body className={`${plusJakartaSans.className} antialiased bg-[#f0f7fb] text-slate-900 min-h-screen flex flex-col font-sans`} suppressHydrationWarning={true}>
         <SmoothScroll>
           <Header />
           <main className="flex-1 pb-20 md:pb-0">

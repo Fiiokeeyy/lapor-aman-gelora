@@ -21,8 +21,13 @@ const Header = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    let rafId: number | null = null;
+
+    const updateScrollState = () => {
+      rafId = null;
+      const y = window.scrollY;
+      const nextScrolled = y > 20;
+      setIsScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
 
       if (pathname === '/') {
         const sectionTops: Record<string, number> = {};
@@ -35,19 +40,27 @@ const Header = () => {
 
         const current = resolveActiveNav(
           pathname,
-          window.scrollY,
+          y,
           window.innerHeight,
           document.documentElement.scrollHeight,
           sectionTops,
           170
         );
-        setActiveNav(current);
+        setActiveNav((prev) => (prev === current ? prev : current));
       }
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [pathname]);
 
   useEffect(() => {
@@ -150,21 +163,16 @@ const Header = () => {
 
   return (
     <>
-      {/* Desktop & Mobile Header Bar - Dynamic Scroll Reactive */}
-      <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
-          isScrolled
-            ? 'pt-3 px-3 sm:px-6'
-            : 'pt-4 px-4 sm:px-8 bg-transparent'
-        }`}
-      >
-        <div
-          className={`mx-auto transition-all duration-300 flex items-center justify-between pointer-events-auto ${
-            isScrolled
-              ? 'max-w-6xl bg-white/92 backdrop-blur-md border border-slate-200/90 shadow-[0_10px_30px_-5px_rgba(15,23,42,0.08)] rounded-2xl sm:rounded-3xl px-5 sm:px-7 py-2.5'
-              : 'max-w-7xl bg-transparent border-transparent px-2 sm:px-4 py-2'
-          }`}
-        >
+      {/* Desktop & Mobile Header Bar - GPU-Composited Transition (Zero Layout Reflow) */}
+      <header className="sticky top-0 z-40 w-full pt-3 px-3 sm:px-6 pointer-events-none">
+        <div className="relative max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-2.5 pointer-events-auto">
+          {/* Dedicated GPU Surface Layer (Only animates opacity & transform for 60fps on mobile) */}
+          <div
+            aria-hidden="true"
+            className={`absolute inset-0 -z-10 rounded-2xl sm:rounded-3xl bg-white/95 border border-slate-200/90 shadow-[0_8px_24px_-6px_rgba(15,23,42,0.1)] transition-[opacity,transform] duration-250 ease-out will-change-[opacity,transform] pointer-events-none ${
+              isScrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.985]'
+            }`}
+          />
           {/* Logo & Identitas: Logo Sekolah Ghama Jelas & Terlihat + Teks LAPOR AMAN */}
           <Link href="/" className="flex items-center gap-3.5 group flex-shrink-0" onClick={(e) => handleNavClick(e, '/')}>
             <div className="relative w-16 h-11 sm:w-20 sm:h-12 flex-shrink-0">
@@ -182,29 +190,32 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* Desktop Nav Links - Rapi, Bernapas, Hover & Active 3D HD Tactile Pill */}
+          {/* Desktop Nav Links - Rapi, Bernapas, Hover & Active 3D Tactile Pill */}
           <nav className="hidden lg:flex items-center gap-1.5 text-[13px] font-bold text-slate-700">
             {navItems.map((item) => {
-              const isActive = activeNav === item.href || (item.href === '/' && (activeNav === '/' || activeNav === ''));
+              const isActive =
+                activeNav === item.href ||
+                (item.href === '/' && (activeNav === '/' || activeNav === '')) ||
+                (item.href === '/#faq' && activeNav === '/faq');
               return (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative px-3.5 py-1.5 rounded-xl transition-all duration-200 group text-[13px] font-bold ${
+                  className={`relative px-3.5 py-2 rounded-xl transition-colors duration-200 group text-[13px] font-bold ${
                     isActive
                       ? 'text-white'
-                      : 'text-slate-700 hover:text-slate-950 hover:bg-slate-900/6 active:bg-slate-900/10'
+                      : 'text-slate-700 hover:text-slate-950 hover:bg-[#E5F4FC]'
                   }`}
                 >
                   <span className="relative z-10 flex items-center gap-1.5">
                     <span>{item.label}</span>
                   </span>
-                  {/* 3D HD Tactile Pill - HANYA MUNCUL DI MENU YANG AKTIF */}
+                  {/* 3D Tactile Active Pill - Konsisten dengan Button Aktif Halaman Statis & Footer */}
                   {isActive && (
                     <motion.span
                       layoutId="activeNavPill"
-                      className="absolute inset-0 rounded-xl bg-orange-500 shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.45)] -z-0"
+                      className="absolute inset-0 rounded-xl bg-[#0B132B] shadow-[0_8px_18px_-4px_rgba(11,19,43,0.48),inset_0_1px_1px_rgba(255,255,255,0.24)] -z-0"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     ></motion.span>
                   )}
@@ -218,7 +229,7 @@ const Header = () => {
             {isLoggedIn ? (
               <Link
                 href={dashboardUrl}
-                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm active:scale-95"
+                className="inline-flex items-center gap-2 bg-[#0B132B] hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-[background-color,transform] shadow-[0_8px_18px_-4px_rgba(11,19,43,0.45),inset_0_1px_1px_rgba(255,255,255,0.22)] active:scale-95"
               >
                 <span>Buka Dasbor</span>
                 <ArrowRight size={14} />
@@ -227,13 +238,17 @@ const Header = () => {
               <>
                 <Link
                   href="/login"
-                  className="text-xs sm:text-sm font-bold text-slate-700 hover:text-orange-500 px-4 py-2 rounded-xl hover:bg-slate-100 transition-colors"
+                  className="text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-950 px-4 py-2 rounded-xl hover:bg-[#E5F4FC] transition-colors"
                 >
                   Masuk
                 </Link>
                 <Link
                   href="/lapor"
-                  className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold shadow-sm active:scale-95 transition-all"
+                  className={`inline-flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold active:scale-95 transition-[background-color,transform,box-shadow] ${
+                    pathname === '/lapor'
+                      ? 'bg-[#0B132B] shadow-[0_8px_18px_-4px_rgba(11,19,43,0.48),inset_0_1px_1px_rgba(255,255,255,0.24)]'
+                      : 'bg-orange-500 hover:bg-orange-600 shadow-[0_8px_18px_-4px_rgba(249,115,22,0.45),inset_0_1px_1px_rgba(255,255,255,0.35)]'
+                  }`}
                 >
                   <ShieldAlert size={15} className="stroke-[2.5]" />
                   <span>Lapor Kasus</span>
@@ -246,7 +261,7 @@ const Header = () => {
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsOpen(true)}
-              className="w-10 h-10 rounded-xl bg-white/80 hover:bg-white text-slate-700 border border-slate-200/80 shadow-sm flex items-center justify-center transition-colors focus:outline-none"
+              className="w-11 h-11 rounded-xl bg-white/90 hover:bg-white text-slate-700 border border-slate-200/80 shadow-sm flex items-center justify-center transition-colors"
               aria-label="Buka Menu"
             >
               <Menu size={20} />
@@ -305,26 +320,46 @@ const Header = () => {
                 </button>
               </div>
 
-              {/* Card Menu Items: Bold uppercase text + blue numbered pill */}
-              <nav className="py-5 space-y-3">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={(e) => {
-                      setIsOpen(false);
-                      handleNavClick(e, item.href);
-                    }}
-                    className="flex items-center justify-between py-1 group"
-                  >
-                    <span className="text-lg font-black tracking-tight text-slate-900 group-hover:text-orange-500 transition-colors">
-                      {item.label}
-                    </span>
-                    <span className="text-xs font-bold text-sky-600 font-mono tracking-wider">
-                      {item.num}
-                    </span>
-                  </Link>
-                ))}
+              {/* Card Menu Items: Bold uppercase text + 3D Active Pill */}
+              <nav className="py-5 space-y-2">
+                {navItems.map((item) => {
+                  const isActive =
+                    activeNav === item.href ||
+                    (item.href === '/' && (activeNav === '/' || activeNav === '')) ||
+                    (item.href === '/#faq' && activeNav === '/faq');
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={(e) => {
+                        setIsOpen(false);
+                        handleNavClick(e, item.href);
+                      }}
+                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all group ${
+                        isActive
+                          ? 'bg-[#0B132B] text-white shadow-[0_8px_18px_-4px_rgba(11,19,43,0.45),inset_0_1px_1px_rgba(255,255,255,0.22)]'
+                          : 'hover:bg-[#E5F4FC] text-slate-900'
+                      }`}
+                    >
+                      <span
+                        className={`text-base sm:text-lg font-black tracking-tight transition-colors ${
+                          isActive
+                            ? 'text-white'
+                            : 'text-slate-900 group-hover:text-sky-900'
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                      <span
+                        className={`text-xs font-bold font-mono tracking-wider ${
+                          isActive ? 'text-orange-400' : 'text-sky-700'
+                        }`}
+                      >
+                        {item.num}
+                      </span>
+                    </Link>
+                  );
+                })}
               </nav>
 
               {/* Card Divider */}

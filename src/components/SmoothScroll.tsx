@@ -16,19 +16,23 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
-    // 2. Hardware-aware configuration: Keep lightweight on mobile and entry-level chips
-    const isMobileTouch = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
+    // 2. Mobile & Desktop Smooth Scrolling (syncTouch enables Lenis momentum on mobile touchscreens)
+    const isTouchDevice =
+      window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
 
     const lenis = new Lenis({
-      duration: isMobileTouch ? 0.8 : 1.0,
+      duration: isTouchDevice ? 0.85 : 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      syncTouch: true,
+      syncTouchLerp: 0.085,
+      touchInertiaExponent: 1.55,
       wheelMultiplier: 0.95,
-      touchMultiplier: 1.2,
+      touchMultiplier: 1.15,
       infinite: false,
     });
 
-    (window as any).lenis = lenis;
+    (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
     let animationFrameId: number;
 
@@ -62,7 +66,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         (href.startsWith('/#') && (currentPath === '/' || currentPath === ''));
 
       if (isCurrentPageHash) {
-        const hash = href.startsWith('/#') ? href.slice(1) : href; // "#alur"
+        const hash = href.startsWith('/#') ? href.slice(1) : href;
         if (hash === '#' || hash === '') {
           e.preventDefault();
           lenis.scrollTo(0, { duration: 1 });
@@ -72,7 +76,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         const targetEl = document.querySelector(hash);
         if (targetEl) {
           e.preventDefault();
-          lenis.scrollTo(targetEl as HTMLElement, { offset: -90, duration: 1.1 });
+          lenis.scrollTo(targetEl as HTMLElement, { offset: -90, duration: 1.05 });
           window.history.pushState(null, '', hash);
         }
       }
@@ -80,7 +84,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
     document.addEventListener('click', handleAnchorClick);
 
-    // If loaded with a hash in URL (e.g. from external page or reload)
+    // If loaded with a hash in URL
     if (window.location.hash) {
       setTimeout(() => {
         const target = document.querySelector(window.location.hash);
@@ -94,14 +98,15 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       cancelAnimationFrame(animationFrameId);
       document.removeEventListener('click', handleAnchorClick);
       lenis.destroy();
-      delete (window as any).lenis;
+      delete (window as unknown as { lenis?: Lenis }).lenis;
     };
   }, []);
 
   // Reset scroll to top on route change
   useEffect(() => {
-    if ((window as any).lenis && !window.location.hash) {
-      (window as any).lenis.scrollTo(0, { immediate: true });
+    const activeLenis = (window as unknown as { lenis?: Lenis }).lenis;
+    if (activeLenis && !window.location.hash) {
+      activeLenis.scrollTo(0, { immediate: true });
     }
   }, [pathname]);
 

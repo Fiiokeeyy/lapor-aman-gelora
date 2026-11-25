@@ -1,170 +1,219 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Mail, MapPin, MessageCircle, AlertTriangle, LifeBuoy, Clock, ChevronRight, UserCheck, HeartHandshake } from 'lucide-react';
-import { motion, Variants } from 'framer-motion';
+import {
+  Mail,
+  MessageCircle,
+  Phone,
+  AlertOctagon,
+  ExternalLink,
+  ArrowRight,
+  HelpCircle,
+} from 'lucide-react';
+import PublicPageHero from '@/components/PublicPageHero';
+import HelpTriageSolver from '@/components/HelpTriageSolver';
+import { Icon3DCounseling } from '@/components/icons/LaporAman3DIcons';
+import {
+  EMERGENCY_CRISIS_CONTACTS,
+  OFFICIAL_HELP_CHANNELS,
+  SCHOOL_ENTITY_NAME,
+  type OfficialHelpChannel,
+} from '@/lib/legal-support-data';
 
-export default function BantuanPage() {
-  // Variabel Animasi
-  const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
-    }
-  };
+export const metadata: Metadata = {
+  title: 'Pusat Bantuan | Lapor Aman SMP Gelora Depok',
+  description:
+    'Panduan cepat mengatasi kendala akun, unggah bukti pengaduan, saluran resmi Guru BK SMP Gelora Depok, serta kontak layanan darurat 112 dan SAPA 129.',
+};
 
-  const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+function renderChannelIcon(id: OfficialHelpChannel['id']) {
+  if (id === 'email') {
+    return <Mail className="w-5 h-5" aria-hidden="true" />;
+  }
+  if (id === 'whatsapp-bk') {
+    return <MessageCircle className="w-5 h-5" aria-hidden="true" />;
+  }
+  return <Phone className="w-5 h-5" aria-hidden="true" />;
+}
 
+export default function PusatBantuanPage() {
   return (
-    <div className="bg-gray-50 min-h-screen font-sans pb-24">
-        
-      {/* --- HERO SECTION --- */}
-      <div className="relative w-full bg-gradient-to-br from-orange-300 via-orange-400 to-orange-500 pt-16 pb-22 lg:pb-24 rounded-b-[40px] lg:rounded-b-[60px] shadow-lg overflow-hidden mb-16">
-         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-         
-         <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
-         <div className="absolute bottom-10 right-10 w-48 h-48 bg-orange-400/20 rounded-full blur-3xl"></div>
+    <div className="bg-[#f0f7fb]">
+      <PublicPageHero
+        currentPath="/pusat-bantuan"
+        signatureLabel="Dukungan Ramah Siswa"
+        titleBefore="Pusat"
+        titleHighlight="Bantuan"
+        titleAfter="Siswa & Sekolah"
+        description={`Temukan solusi cepat kendala akun, panduan mengunggah bukti laporan, serta saluran komunikasi resmi dengan Guru BK ${SCHOOL_ENTITY_NAME}.`}
+        metaText={`Jam Layanan Sekolah: Senin - Jumat (07.30 - 15.30 WIB) | ${SCHOOL_ENTITY_NAME}`}
+        visualTitle="Pendampingan Konselor BK"
+        visualSubtitle="Tersedia secara daring maupun tatap muka tertutup di Ruang BK Gedung B."
+        rightVisual={<Icon3DCounseling />}
+      />
 
-         <div className="container mx-auto px-6 text-center relative z-10">
-            <motion.div 
-              initial="hidden"
-              animate="visible"
-              variants={fadeInUp}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 space-y-10">
+        {/* 1. Interactive Self-Service Issue Triage */}
+        <HelpTriageSolver />
+
+        {/* 2. Official School Contact Channels */}
+        <section aria-labelledby="saluran-resmi-heading">
+          <div className="mb-5">
+            <h2
+              id="saluran-resmi-heading"
+              className="text-xl sm:text-2xl font-bold text-slate-900"
             >
-              <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-2xl mb-6 shadow-inner border border-white/20 text-white">
-                <LifeBuoy size={32} />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-                Pusat <span className="text-gray-800">Bantuan</span>
-              </h1>
-              <p className="text-lg md:text-xl text-orange-100 max-w-2xl mx-auto leading-relaxed font-medium">
-                Butuh bantuan lebih lanjut atau keadaan darurat? Tim kami siap mendengarkan dan membantu Anda kapan saja.
-              </p>
-            </motion.div>
-         </div>
-      </div>
-
-      {/* --- KONTEN UTAMA --- */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        
-        {/* 1. Kartu Kontak Utama (Hanya 2 Kolom: Email & Lokasi) */}
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-          // UPDATE: Mengubah grid menjadi 2 kolom dan membatasi lebar agar rapi di tengah
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-4xl mx-auto"
-        >
-          {/* Kartu Email */}
-          <motion.div 
-            variants={fadeInUp} 
-            whileHover={{ y: -8 }}
-            className="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 text-center group relative overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-orange-500"></div>
-            <div className="w-16 h-16 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform border border-orange-100">
-              <Mail size={28} />
-            </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Email Resmi</h3>
-            <div className="flex items-center justify-center gap-2 text-gray-600 text-sm mb-6 bg-gray-100 py-1 px-3 rounded-full inline-flex">
-                <Clock size={14} /> <span>Respon dalam 1x24 Jam</span>
-            </div>
-            <a href="mailto:bk.smpgelora@gmail.com" className="text-lg font-bold text-orange-500 hover:text-orange-600 bg-orange-50 hover:bg-orange-100 py-3 px-6 rounded-xl block w-full transition-colors border border-orange-100 border-dashed truncate">
-                gelora1984@gmail.com
-            </a>
-          </motion.div>
-
-          {/* Kartu Lokasi */}
-          <motion.div 
-            variants={fadeInUp} 
-            whileHover={{ y: -8 }}
-            className="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 text-center group relative overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-blue-500"></div>
-            <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform border border-blue-100">
-              <MapPin size={28} />
-            </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Ruang BK</h3>
-            <div className="flex items-center justify-center gap-2 text-gray-600 text-sm mb-6 bg-gray-100 py-1 px-3 rounded-full inline-flex">
-                <UserCheck size={14}/> <span>Konseling Tatap Muka</span>
-            </div>
-            <div className="text-lg font-bold text-blue-500 bg-blue-50 py-3 px-6 rounded-xl block w-full border border-blue-100 border-dashed">
-                Gedung B, Lantai 2
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* 2. Section FAQ Link */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="mb-12 bg-gradient-to-br from-orange-300 via-orange-400 to-orange-500 rounded-[2.5rem] p-10 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-orange-900/20 relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-500/30 rounded-full -ml-10 -mb-10 blur-2xl"></div>
-          
-          <div className="relative z-10 text-center md:text-left">
-            <h2 className="text-white text-2xl md:text-3xl font-extrabold mb-3">Masih Bingung Caranya?</h2>
-            <p className="text-white text-lg font-medium">Cek pertanyaan yang sering diajukan teman-temanmu di halaman FAQ.</p>
+              Saluran Resmi {SCHOOL_ENTITY_NAME}
+            </h2>
+            <p className="mt-1 text-sm sm:text-base text-slate-600">
+              Hubungi petugas sekolah melalui kanal resmi berikut apabila
+              membutuhkan verifikasi akun atau pendampingan langsung.
+            </p>
           </div>
-          <Link href="/faq" className="relative z-10 bg-white text-gray-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 hover:text-gray-800 transition shadow-lg flex items-center gap-3 transform hover:-translate-y-1">
-            <MessageCircle size={20} />
-            Buka Halaman FAQ
-          </Link>
-        </motion.div>
 
-        {/* 3. Section Darurat */}
-        <motion.div 
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ delay: 0.4, duration: 0.6 }}
-           className="bg-red-50 border border-red-100 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-12 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 shadow-sm"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {OFFICIAL_HELP_CHANNELS.map((channel) => (
+              <div
+                key={channel.id}
+                className="bg-white border border-[#9DD2F2] rounded-2xl p-6 shadow-[0_14px_34px_-24px_rgba(2,132,199,0.18)] flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-xl bg-[#E5F4FC] border border-[#9DD2F2] text-sky-600 flex items-center justify-center shrink-0">
+                      {renderChannelIcon(channel.id)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-sky-900">
+                        {channel.category}
+                      </p>
+                      <h3 className="text-base font-bold text-slate-900 leading-snug">
+                        {channel.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-base font-bold text-slate-900 break-words">
+                    {channel.value}
+                  </p>
+                  <p className="mt-1.5 text-sm text-slate-600 leading-relaxed">
+                    {channel.scheduleOrLocation}
+                  </p>
+                </div>
+
+                <a
+                  href={channel.href}
+                  target={channel.external ? '_blank' : undefined}
+                  rel={channel.external ? 'noopener noreferrer' : undefined}
+                  className="mt-5 inline-flex items-center justify-center gap-2 min-h-[44px] px-4 py-2.5 rounded-xl bg-[#E5F4FC] hover:bg-[#CCEAFC] border border-[#9DD2F2] text-slate-900 text-sm font-bold transition-colors"
+                >
+                  <span>{channel.actionLabel}</span>
+                  {channel.external ? (
+                    <ExternalLink className="w-4 h-4 text-sky-700" aria-hidden="true" />
+                  ) : (
+                    <ArrowRight className="w-4 h-4 text-sky-700" aria-hidden="true" />
+                  )}
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 3. Solid Red Emergency Crisis Card */}
+        <section
+          aria-labelledby="darurat-heading"
+          className="rounded-3xl sm:rounded-[2rem] bg-red-600 border border-red-700 text-white p-7 sm:p-10 shadow-md"
         >
-           <div className="p-5 md:p-6 bg-white text-red-600 rounded-3xl shadow-sm border border-red-100 flex-shrink-0 animate-pulse">
-             <AlertTriangle size={40} className="md:w-12 md:h-12" />
-           </div>
-           
-           <div className="text-center md:text-left w-full">
-             <h3 className="text-2xl font-extrabold text-red-700 mb-3">Keadaan Darurat?</h3>
-             <p className="text-red-800/80 leading-relaxed text-sm md:text-lg mb-6">
-               Jika Anda atau teman Anda dalam bahaya fisik, jangan menunggu balasan aplikasi. 
-               Hubungi <strong>Layanan SAPA 129 (Kemenpppa)</strong> untuk perlindungan anak & perempuan atau layanan darurat nasional.
-             </p>
-             
-             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                 <a 
-                    href="tel:112" 
-                    className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-3.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-lg shadow-red-200 hover:-translate-y-1 transform"
-                 >
-                    Darurat (112) <ChevronRight size={20} />
-                 </a>
-                 <a 
-                    href="https://wa.me/628111129129" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-3.5 bg-white text-red-600 border border-red-200 font-bold rounded-xl hover:bg-red-50 transition shadow-sm hover:-translate-y-1 transform"
-                 >
-                    <HeartHandshake size={20} /> SAPA 129 (WA)
-                 </a>
-             </div>
-           </div>
-        </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-red-700 border border-red-500 text-white font-bold text-xs sm:text-sm">
+                <AlertOctagon className="w-4 h-4 text-white shrink-0" aria-hidden="true" />
+                <span>Layanan Darurat & Ancaman Keselamatan (24 Jam)</span>
+              </div>
+              <h2
+                id="darurat-heading"
+                className="mt-3 text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight"
+              >
+                Sedang Menghadapi Bahaya Fisik atau Ancaman Mendesak?
+              </h2>
+              <p className="mt-2.5 text-sm sm:text-base text-red-50 leading-relaxed font-medium">
+                Jika kejadian berlangsung saat jam sekolah dan mengancam
+                keselamatan jiwa, segera temui guru piket, wali kelas, atau
+                petugas keamanan sekolah. Di luar jam sekolah, akses hotline
+                nasional berikut:
+              </p>
+            </div>
 
-      </main>
+            <div className="lg:col-span-5 flex flex-col gap-3">
+              {EMERGENCY_CRISIS_CONTACTS.map((contact) => {
+                const isPrimary = contact.variant === 'primary-crisis';
+                return (
+                  <a
+                    key={contact.id}
+                    href={contact.href}
+                    target={contact.external ? '_blank' : undefined}
+                    rel={contact.external ? 'noopener noreferrer' : undefined}
+                    className={`inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-3 rounded-xl text-sm font-extrabold transition-colors active:scale-95 ${
+                      isPrimary
+                        ? 'bg-white hover:bg-red-50 text-red-700 shadow-sm'
+                        : 'bg-red-700 hover:bg-red-800 text-white border-2 border-white shadow-sm'
+                    }`}
+                  >
+                    <span>{contact.label}</span>
+                    {contact.external ? (
+                      <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    ) : (
+                      <Phone className="w-4 h-4" aria-hidden="true" />
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Solid Telur Asin CTA Card (Identik dengan Bottom CTA Card di Landing Page) */}
+        <section
+          aria-labelledby="bridge-faq-heading"
+          className="rounded-3xl sm:rounded-[2.5rem] bg-[#CCEAFC] border border-[#9DD2F2] p-8 sm:p-12 shadow-md flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+        >
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 text-sky-900 text-xs sm:text-sm font-bold">
+              <HelpCircle className="w-4 h-4 text-sky-700 shrink-0" aria-hidden="true" />
+              <span>Pertanyaan Umum Seputar Alur Lapor</span>
+            </div>
+            <h2
+              id="bridge-faq-heading"
+              className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight"
+            >
+              Ingin Mengetahui{' '}
+              <span className="text-orange-500">
+                Jawaban Cepat dari Siswa Lain?
+              </span>
+            </h2>
+            <p className="mt-2.5 text-sm sm:text-base text-slate-700 leading-relaxed font-medium">
+              Telusuri daftar tanya jawab lengkap mengenai proses penanganan
+              kasus, keamanan identitas, serta dukungan konseling di halaman
+              FAQ.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3.5 shrink-0">
+            <Link
+              href="/faq"
+              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-6 py-3 rounded-xl bg-white hover:bg-sky-50 text-sky-700 text-sm sm:text-base font-extrabold shadow-sm transition-colors active:scale-95"
+            >
+              <span>Baca Halaman FAQ</span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href="/lapor"
+              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm sm:text-base font-extrabold shadow-[0_8px_18px_-4px_rgba(249,115,22,0.45),inset_0_1px_1px_rgba(255,255,255,0.35)] transition-all active:scale-95"
+            >
+              <span>Kirim Laporan</span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

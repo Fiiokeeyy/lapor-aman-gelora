@@ -44,10 +44,10 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Single Cohesive School Canvas Dot Pattern (Light Telur Asin Sections Only) */
+/* Soft Subtle Dot Pattern for Selected Telur Asin Sections Only */
 .bg-pattern-telur-asin {
-  background-image: radial-gradient(rgba(2, 132, 199, 0.14) 1.25px, transparent 1.25px);
-  background-size: 26px 26px;
+  background-image: radial-gradient(rgba(2, 132, 199, 0.09) 1.2px, transparent 1.2px);
+  background-size: 30px 30px;
 }
 
 /* Accessibility Base Layer: Consistent Pointer & Visible Focus Ring (WCAG 2.1 AA) */
